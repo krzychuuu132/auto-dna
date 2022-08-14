@@ -1,7 +1,7 @@
 import type { NextPage } from 'next';
 import Head from 'next/head';
 
-const Home: NextPage = () => {
+const Login: NextPage = () => {
   return (
     <div className="container">
       <Head>
@@ -13,11 +13,11 @@ const Home: NextPage = () => {
         <nav className="nav"></nav>
       </header>
       <main>
-        <h1>Homepage</h1>
+        <h1>Login</h1>
       </main>
       <footer></footer>
     </div>
   );
 };
 
-export default Home;
+export default Login;
