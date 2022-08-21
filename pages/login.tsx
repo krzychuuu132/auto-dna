@@ -1,7 +1,11 @@
 import type { NextPage } from 'next';
+import { signIn } from 'next-auth/react';
 import Head from 'next/head';
 
 const Login: NextPage = () => {
+  const handleFacebookSignIn = async () => {
+    await signIn('facebook');
+  };
   return (
     <div className="container">
       <Head>
@@ -11,6 +15,7 @@ const Login: NextPage = () => {
       </Head>
       <header className="App-header">
         <nav className="nav"></nav>
+        <button onClick={handleFacebookSignIn}>Sign in With Faceebok</button>
       </header>
       <main>
         <h1>Login</h1>
