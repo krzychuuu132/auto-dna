@@ -8,10 +8,10 @@ import ErrorMessage from 'components/atoms/ErrorMessage/ErrorMessage';
 import { Router, useRouter } from 'next/router';
 
 export interface RegisterFormData {
-  name: string;
-  surname: string;
-  email: string;
-  password: string;
+  name?: string;
+  surname?: string;
+  email?: string;
+  password?: string;
   repeatPassword?: string;
 }
 
