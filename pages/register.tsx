@@ -8,10 +8,10 @@ import ErrorMessage from 'components/atoms/ErrorMessage/ErrorMessage';
 import { Router, useRouter } from 'next/router';
 
 export interface RegisterFormData {
-  name?: string;
-  surname?: string;
-  email?: string;
-  password?: string;
+  name: string;
+  surname: string;
+  email: string;
+  password: string;
   repeatPassword?: string;
 }
 
@@ -24,7 +24,7 @@ const Register: NextPage = () => {
     formState: { errors },
   } = useForm();
 
-  const onSubmit = async (formData: RegisterFormData): Promise<void> => {
+  const onSubmit = async (formData: any): Promise<void> => {
     try {
       const response = await axios.post('/api/register', formData);
       const { message } = response.data;
