@@ -6,7 +6,7 @@ import bcrypt from 'bcrypt';
 
 interface MessageDetails {
   error: Boolean;
-  errorType: string;
+  errorType?: string;
   text: string;
   user?: RegisterFormData;
 }

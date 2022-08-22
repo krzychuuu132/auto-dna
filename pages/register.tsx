@@ -12,7 +12,7 @@ export interface RegisterFormData {
   surname: string;
   email: string;
   password: string;
-  repeatPassword: string;
+  repeatPassword?: string;
 }
 
 const Register: NextPage = () => {
@@ -24,7 +24,7 @@ const Register: NextPage = () => {
     formState: { errors },
   } = useForm();
 
-  const onSubmit = async (formData: RegisterFormData): void => {
+  const onSubmit = async (formData: RegisterFormData): Promise<void> => {
     try {
       const response = await axios.post('/api/register', formData);
       const { message } = response.data;
