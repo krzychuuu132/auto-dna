@@ -12,5 +12,6 @@ export default NextAuth({
       clientSecret: process.env.FACEBOOK_CLIENT_SECRET as string,
     }),
   ],
+  secret: process.env.NEXTAUTH_SECRET,
   adapter: PrismaAdapter(prisma),
 });
