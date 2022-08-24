@@ -8,8 +8,8 @@ const prisma = new PrismaClient();
 export default NextAuth({
   providers: [
     FacebookProvider({
-      clientId: process.env.FB_ID as string,
-      clientSecret: process.env.FB_SECRET as string,
+      clientId: process.env.FACEBOOK_CLIENT_ID as string,
+      clientSecret: process.env.FACEBOOK_CLIENT_SECRET as string,
     }),
   ],
   adapter: PrismaAdapter(prisma),
