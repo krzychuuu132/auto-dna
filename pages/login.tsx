@@ -6,6 +6,9 @@ const Login: NextPage = () => {
   const handleFacebookSignIn = async () => {
     await signIn('facebook');
   };
+  const handleGoogleSignIn = async () => {
+    await signIn('google');
+  };
   return (
     <div className="container">
       <Head>
@@ -16,6 +19,7 @@ const Login: NextPage = () => {
       <header className="App-header">
         <nav className="nav"></nav>
         <button onClick={handleFacebookSignIn}>Sign in With Faceebok</button>
+        <button onClick={handleGoogleSignIn}>Sign in With Google</button>
       </header>
       <main>
         <h1>Login</h1>
