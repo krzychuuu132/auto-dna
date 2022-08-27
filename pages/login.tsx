@@ -1,14 +1,16 @@
 import type { NextPage } from 'next';
-import { signIn } from 'next-auth/react';
+import { signIn, useSession } from 'next-auth/react';
 import Head from 'next/head';
 
 const Login: NextPage = () => {
-  const handleFacebookSignIn = async () => {
-    await signIn('facebook');
+  const { data, status } = useSession();
+  const handleInstagramSignIn = async () => {
+    await signIn('instagram');
   };
   const handleGoogleSignIn = async () => {
     await signIn('google');
   };
+  console.log(data, status);
   return (
     <div className="container">
       <Head>
@@ -18,7 +20,7 @@ const Login: NextPage = () => {
       </Head>
       <header className="App-header">
         <nav className="nav"></nav>
-        <button onClick={handleFacebookSignIn}>Sign in With Faceebok</button>
+        <button onClick={handleInstagramSignIn}>Sign in With Instagram</button>
         <button onClick={handleGoogleSignIn}>Sign in With Google</button>
       </header>
       <main>
