@@ -1,7 +1,21 @@
 import type { NextPage } from 'next';
+import { signOut, useSession } from 'next-auth/react';
 import Head from 'next/head';
+import { useRouter } from 'next/router';
+import { useEffect } from 'react';
 
 const Home: NextPage = () => {
+  const { data, status } = useSession();
+  const router = useRouter();
+
+  const handleSignOut = () => {
+    signOut();
+  };
+  useEffect(() => {
+    if (status !== 'authenticated') {
+      router.push('/login');
+    }
+  }, [data, status, router]);
   return (
     <div className="container">
       <Head>
@@ -14,6 +28,7 @@ const Home: NextPage = () => {
       </header>
       <main>
         <h1>Homepage</h1>
+        <button onClick={handleSignOut}>Sign out</button>
       </main>
       <footer></footer>
     </div>

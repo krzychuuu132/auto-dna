@@ -6,10 +6,11 @@ import { StyledInput, StyledInputWrapper, StyledLabel } from './Input.styles';
 interface InputProps {
   type: string;
   placeholder?: string;
-  alt: string;
-  name: string;
+  alt?: string;
+  name?: string;
   label?: string;
   id?: string;
+  defaultValue?: any;
 }
 
 const Input = React.forwardRef((props: InputProps, ref: any) => {

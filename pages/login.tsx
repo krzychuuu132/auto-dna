@@ -1,16 +1,50 @@
-import type { NextPage } from 'next';
-import { signIn, useSession } from 'next-auth/react';
+import type { GetServerSideProps, GetServerSidePropsContext, InferGetServerSidePropsType } from 'next';
+import { signIn, useSession, getCsrfToken, getProviders } from 'next-auth/react';
+import { unstable_getServerSession as getServerSession } from 'next-auth';
+import { useForm } from 'react-hook-form';
+import { options } from './api/auth/[...nextauth]';
 import Head from 'next/head';
+import { useRouter } from 'next/router';
+import { useCallback, useEffect } from 'react';
+import Input from 'components/atoms/Input/Input';
+import Button from 'components/atoms/Button/Button';
 
-const Login: NextPage = () => {
+export interface LoginFormData {
+  email: string;
+  password: string;
+}
+
+const Login = ({ providers, csrfToken }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const { data, status } = useSession();
-  const handleInstagramSignIn = async () => {
-    await signIn('instagram');
+  const router = useRouter();
+  const {
+    register,
+    handleSubmit,
+    setError,
+    formState: { errors },
+  } = useForm();
+
+  useEffect(() => {
+    if (data && status === 'authenticated') {
+      router.push('/');
+    }
+  }, [data, status, router]);
+
+  const mapNextAuthProviders = useCallback(() => {
+    return Object.values(providers!).map((provider, key) =>
+      provider.id !== 'credentials' ? (
+        <button key={key} onClick={() => signIn(provider.id)}>
+          {provider.name}
+        </button>
+      ) : null
+    );
+  }, [providers]);
+
+  const onSubmit = (formData: LoginFormData) => {
+    const { email, password } = formData;
+    signIn('credentials', { email, password });
   };
-  const handleGoogleSignIn = async () => {
-    await signIn('google');
-  };
-  console.log(data, status);
+
   return (
     <div className="container">
       <Head>
@@ -20,11 +54,16 @@ const Login: NextPage = () => {
       </Head>
       <header className="App-header">
         <nav className="nav"></nav>
-        <button onClick={handleInstagramSignIn}>Sign in With Instagram</button>
-        <button onClick={handleGoogleSignIn}>Sign in With Google</button>
       </header>
       <main>
         <h1>Login</h1>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <Input name="csrfToken" type="hidden" defaultValue={csrfToken} />
+          <Input type="email" id="email" {...register('email', { required: 'Pole Email jest wymagane' })} />
+          <Input type="password" id="password" {...register('password', { required: 'Pole Hasło jest wymagane' })} />
+          <Button type="submit">Zaloguj się</Button>
+        </form>
+        {mapNextAuthProviders()}
       </main>
       <footer></footer>
     </div>
@@ -32,3 +71,30 @@ const Login: NextPage = () => {
 };
 
 export default Login;
+
+interface SignInPageProps {
+  providers: Awaited<ReturnType<typeof getProviders>>;
+  csrfToken: Awaited<ReturnType<typeof getCsrfToken>>;
+}
+
+export const getServerSideProps: GetServerSideProps<SignInPageProps> = async ({ req, res }: GetServerSidePropsContext) => {
+  const session = await getServerSession(req, res, options);
+  if (session?.user) {
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false,
+      },
+    };
+  }
+
+  const providers = await getProviders();
+  const csrfToken = await getCsrfToken();
+  console.log(csrfToken);
+  return {
+    props: {
+      providers,
+      csrfToken,
+    },
+  };
+};

@@ -4,6 +4,8 @@ import { StyledButton } from './Button.styles';
 interface ButtonChildren {
   children: JSX.Element[] | JSX.Element | string;
   type?: string;
+  onClick?: Function;
+  onSubmit?: Function;
 }
 interface ButtonPropsArr {
   type: string;
